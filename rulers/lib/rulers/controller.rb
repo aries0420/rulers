@@ -16,6 +16,9 @@ module Rulers
       filename = File.join "app", "views", controller_name, "#{view_name}.html.erb"
       template = File.read filename
       eruby = Erubis::Eruby.new(template)
+      instance_variables.each do |var|
+        eruby.instance_variable_set(var, instance_variable_get(var))
+      end
       eruby.result locals.merge(:env => env)
     end
 
@@ -44,6 +47,7 @@ module Rulers
     end
 
     def render_response(*args)
+      puts "Arguments to render are: #{args.inspect}"
       response(render(*args))
     end
   end
