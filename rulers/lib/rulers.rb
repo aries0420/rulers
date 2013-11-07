@@ -36,7 +36,12 @@ module Rulers
         end
         text = "</ul></body></html>"
       end
-      [200, {'Content-Type' => 'text/html'}, [text]]
+      if controller.get_response
+        st, hd, rs = controller.get_response.to_a
+        [st, hd, [rs.body].flatten]
+      else
+        [200, {'Content-Type' => 'text/html'}, [text]]
+      end
     end
   end
 end
